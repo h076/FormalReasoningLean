@@ -156,10 +156,22 @@ begin
 end
 
 -- q08 : ¬ (P ↔ ¬ P)
-def answer08 : PokerAnswer  := UNANSWERED
+def answer08 : PokerAnswer  := Intuition
 theorem q08 : ¬ (P ↔ ¬ P) :=
 begin
-  sorry,
+  assume pnp,
+  cases pnp with pnp npp,
+  apply pnp,
+  apply npp,
+  assume p,
+  apply pnp,
+  exact p,
+  exact p,
+  apply npp,
+  assume p,
+  apply pnp,
+  exact p,
+  exact p,
 end
 
 -- q09 : ¬ P ↔ ¬ ¬ ¬ P
