@@ -252,9 +252,14 @@ def classification06 : PokerAnswer := Classical
 theorem q06 : ∀ x y z : A, x ≠ y → (x ≠ z ∨ y ≠ z) :=
 begin 
   assume x y z nxy,
-  constructor,
-  assume xz,
-  
+  cases em (x = z) with xz nxz,
+  right,
+  assume yz,
+  apply nxy,
+  rewrite yz,
+  exact xz,
+  left,
+  exact nxz,
 end
 
 def classification07 : PokerAnswer := Classical
@@ -296,14 +301,27 @@ end
 def classification10 : PokerAnswer := Classical
 theorem q10 : (∃ x : A, true) → (∃ x:A, PP x → ∀ x : A,PP x) :=
 begin 
-  assume et,
-  cases et with a t,
-  existsi a,
-  assume pp,
-  assume a,
-  cases (em(PP a)) with pa npa,
-  exact pa,
-  dedup,
+  assume h,
+  cases h with x t,
+  apply raa,
+  assume h1,
+  apply h1,
+  existsi x,
+  assume ppx,
+  assume y,
+  apply raa,
+  assume h2,
+  apply h2,
+  have f : false,
+  apply h1,
+  existsi y,
+  assume ppy,
+  assume z,
+  apply raa,
+  assume h3,
+  apply h2,
+  exact ppy,
+  cases f,
   
 end
 
