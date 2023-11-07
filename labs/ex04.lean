@@ -95,17 +95,75 @@ be a proof of ChXX or a proof of ¬ ChXX, so either delete the
 ? or replace it by a ¬.
 -/
 
--- theorem ch01 : ? Ch01 :=
+theorem ch01 : ¬ Ch01 :=
+begin
+  dsimp [Ch01],
+  assume all,
+  have contra : ∃ b : bool, ¬(!b ≠ b),
+  cases tt,
+  sorry,
+end
 
--- theorem ch02 : ? Ch02 :=
+theorem ch02 : Ch02 :=
+begin
+  dsimp [Ch02],
+  assume x,
+  cases x,
+  existsi ff,
+  refl,
+  existsi tt,
+  refl,
+end
 
--- theorem ch03 : ? Ch03 :=
+theorem ch03 : ¬ Ch03 :=
+begin
+  dsimp [Ch03],
+  assume all,
+  cases all with b h,
+  cases b,
+  have hff := h tt,
+  contradiction,
+  have htt := h ff,
+  contradiction,
+end
 
--- theorem ch04 : ? Ch04 :=
+theorem ch04 : Ch04 :=
+begin
+  dsimp [Ch04],
+  assume x y,
+  assume eq,
+  cases x,
+  cases y,
+  refl,
+  contradiction,
+  cases y,
+  contradiction,
+  refl,
+end
 
--- theorem ch05 : ? Ch05 :=
+theorem ch05 : Ch05 :=
+begin
+  dsimp [Ch05],
+  assume x y,
+  assume neq,
+  cases x,
+  cases y,
+  refl,
+  contradiction,
+  cases y,
+  contradiction,
+  refl,
+end
 
--- theorem ch06 : ? Ch06 :=
+theorem ch06 : ¬ Ch06 :=
+begin
+  dsimp [Ch06],
+  assume all,
+  have contra : ∀ x y z : bool, x ≠ y ∨ y ≠ z,
+  assume b,
+  cases b,
+  
+end
 
 -- theorem ch07 : ? Ch07 :=
 
