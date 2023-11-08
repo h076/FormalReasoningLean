@@ -34,11 +34,11 @@ def is_tt : bool → Prop
 /- --- Do not add/change anything above this line --- -/
 
 
---local notation (name := band) x && y := band x y 
---local notation (name := bor) x || y := bor x y
+local notation (name := band) x && y := band x y 
+local notation (name := bor) x || y := bor x y
 
-local notation x && y := band x y 
-local notation x || y := bor x y
+--local notation x && y := band x y 
+--local notation x || y := bor x y
 
 
 
@@ -98,12 +98,10 @@ theorem ch01 : ¬ Ch01 :=
 begin
   dsimp [Ch01],
   assume all,
-  have contra : ∃ b : bool, b = b,
-  existsi tt,
-  refl,
-  cases contra with b eq,
-  cases b,
-  
+  have nt : !tt = tt,
+  apply all,
+  dsimp [bnot] at nt,
+  contradiction,
 end
 
 theorem ch02 : Ch02 :=
@@ -157,22 +155,15 @@ begin
   refl,
 end
 
-theorem ch06 : Ch06 :=
+theorem ch06 : ¬ Ch06 :=
 begin
   dsimp [Ch06],
-  assume x y z,
-  cases x,
-  cases y,
-  cases z,
-  constructor,
-  refl,
-  constructor,
-  refl,
-  cases z,
-  constructor,
+  assume all,
+  have contra : ff = tt ∨ tt = ff,
+  apply all,
+  cases contra,
   contradiction,
-  sorry,
-  
+  contradiction,
 end
 
 theorem ch07 : Ch07 :=
@@ -217,17 +208,18 @@ begin
   refl,
 end
 
-theorem ch10 : Ch10 :=
+theorem ch10 : ¬ Ch10 :=
 begin
   dsimp [Ch10],
-  assume x y,
-  constructor,
-  assume h,
-  cases x,
+  assume all,
+  have contra : tt && ff = ff ↔ tt = ff,
+  apply all,
+  dsimp [band] at contra,
+  cases contra with lr rl,
+  have h : tt = ff,
+  apply lr,
   refl,
-  sorry,
-  assume xf,
-  
+  contradiction,
 end
 
 
@@ -239,13 +231,52 @@ a) Show the correctness of or:
 -/
 theorem orb_ok : ∀ x y : bool, is_tt x ∨ is_tt y ↔ is_tt (x || y) :=
 begin
-  sorry,
+  assume x y,
+  cases x,
+  cases y,
+  dsimp [is_tt,bor],
+  constructor,
+  assume ff,
+  cases ff,
+  assumption,
+  assumption,
+  assume f,
+  left,
+  assumption,
+  dsimp [is_tt,bor],
+  constructor,
+  assume ft,
+  cases ft,
+  contradiction,
+  assumption,
+  assume t,
+  right,
+  assumption,
+  cases y,
+  dsimp [is_tt,bor],
+  constructor,
+  assume tf,
+  cases tf,
+  assumption,
+  contradiction,
+  assume t,
+  left,
+  assumption,
+  dsimp [is_tt,bor],
+  constructor,
+  assume tt,
+  cases tt,
+  assumption,
+  assumption,
+  assume t,
+  left,
+  assumption,
 end
 /-
 b) Define an operation 
 -/
 def exb  (f : bool → bool) : bool
-    := sorry
+    := (f tt) || (f ff)
 
 /-
 here you can use boolean operations 
@@ -255,7 +286,27 @@ Prove that it computes existential quantification:
 -/
 theorem exb_ok : ∀ f : bool → bool, is_tt (exb f) ↔ ∃ x : bool, is_tt (f x) :=
 begin
-  sorry,
+  assume f,
+  dsimp [exb],
+  have lem : is_tt (f tt) ∨ is_tt (f ff) ↔ ∃ x : bool, is_tt (f x),
+  constructor,
+  assume tf,
+  cases tf with t f,
+  existsi tt,
+  assumption,
+  existsi ff,
+  assumption,
+  assume e,
+  cases e with b isb,
+  cases b,
+  right,
+  assumption,
+  left,
+  assumption,
+
+  rewrite<- lem,
+  symmetry,
+  apply orb_ok,
 end
 /-
 (*) the exb part is difficult, you only loose 20% if you don't do it.
