@@ -29,14 +29,13 @@ prefix `!`:90 := bnot
 reserve infixr ` && `:65
 reserve infixr ` || `:60
 
-local notation (name := band) x && y := band x y 
-local notation (name := bor) x || y := bor x y
+--local notation (name := band) x && y := band x y 
+--local notation (name := bor) x || y := bor x y
 
-/-
--- If the above gives an error use the following instead:
+
 local notation x && y := band x y
 local notation x || y := bor x y
--/
+
 
 -- First De Morgan law on booleans
 

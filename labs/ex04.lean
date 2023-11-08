@@ -34,13 +34,12 @@ def is_tt : bool → Prop
 /- --- Do not add/change anything above this line --- -/
 
 
-local notation (name := band) x && y := band x y 
-local notation (name := bor) x || y := bor x y
-/-
-If you get an error update your lean or use:
+--local notation (name := band) x && y := band x y 
+--local notation (name := bor) x || y := bor x y
+
 local notation x && y := band x y 
 local notation x || y := bor x y
--/
+
 
 
 prefix `!`:90 := bnot
@@ -99,9 +98,12 @@ theorem ch01 : ¬ Ch01 :=
 begin
   dsimp [Ch01],
   assume all,
-  have contra : ∃ b : bool, ¬(!b ≠ b),
-  cases tt,
-  sorry,
+  have contra : ∃ b : bool, b = b,
+  existsi tt,
+  refl,
+  cases contra with b eq,
+  cases b,
+  
 end
 
 theorem ch02 : Ch02 :=
@@ -155,23 +157,78 @@ begin
   refl,
 end
 
-theorem ch06 : ¬ Ch06 :=
+theorem ch06 : Ch06 :=
 begin
   dsimp [Ch06],
-  assume all,
-  have contra : ∀ x y z : bool, x ≠ y ∨ y ≠ z,
-  assume b,
-  cases b,
+  assume x y z,
+  cases x,
+  cases y,
+  cases z,
+  constructor,
+  refl,
+  constructor,
+  refl,
+  cases z,
+  constructor,
+  contradiction,
+  sorry,
   
 end
 
--- theorem ch07 : ? Ch07 :=
+theorem ch07 : Ch07 :=
+begin
+  dsimp [Ch07],
+  existsi ff,
+  assume y,
+  dsimp [bor],
+  cases y,
+  refl,
+  refl,
+end
 
--- theorem ch08 : ? Ch08 :=
+theorem ch08 : Ch08 :=
+begin
+  dsimp [Ch08],
+  existsi tt,
+  assume y,
+  dsimp [bor],
+  cases y,
+  refl,
+  refl,
+end
 
--- theorem ch09 : ? Ch09 :=
+theorem ch09 : Ch09 :=
+begin
+  dsimp [Ch09],
+  assume x,
+  constructor,
+  cases x,
+  assume y,
+  apply y tt,
+  assume y,
+  refl,
+  cases x,
+  contradiction,
+  assume t,
+  assume y,
+  dsimp [band],
+  cases y,
+  refl,
+  refl,
+end
 
--- theorem ch10 : ? Ch10 :=
+theorem ch10 : Ch10 :=
+begin
+  dsimp [Ch10],
+  assume x y,
+  constructor,
+  assume h,
+  cases x,
+  refl,
+  sorry,
+  assume xf,
+  
+end
 
 
 /- 
